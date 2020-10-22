@@ -1,5 +1,6 @@
 package com.assignment.individual.pokedex.services;
 
+import com.assignment.individual.pokedex.entities.Pokemon;
 import com.assignment.individual.pokedex.entities.PokemonSummary;
 import com.assignment.individual.pokedex.entities.PokemonSummaryList;
 import com.assignment.individual.pokedex.repositories.PokemonSummaryRepo;
@@ -26,11 +27,12 @@ public class PokemonSummaryService {
         List<PokemonSummary> pokemonsFromDB = pokemonSummaryRepo.findAll();
         if (pokemonsFromDB.size() == 0) {
             PokemonSummaryList response = restTemplate.getForObject(POKEMONS_URL, PokemonSummaryList.class);
-            List<PokemonSummary> pokemons = response.getResults();
-            for (PokemonSummary p : pokemons) {
+            List<PokemonSummary> pokemonListSummary = response.getResults();
+            List<Pokemon> pokemonList;
+            for (PokemonSummary p : pokemonListSummary) {
                 pokemonSummaryRepo.save(p);
             }
-            return pokemons;
+            return pokemonListSummary;
         }
         return pokemonsFromDB;
     }

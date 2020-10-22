@@ -2,16 +2,16 @@ package com.assignment.individual.pokedex.entities;
 
 import org.springframework.data.annotation.Id;
 
-public class PokemonSummary {
+public class Type {
     @Id
-    private String id;
-    private String name;
-    private String url;
+    String id;
+    String name;
+    String url;
 
-    public PokemonSummary() {
+    public Type() {
     }
 
-    public PokemonSummary(String name, String url) {
+    public Type(String name, String url) {
         this.name = name;
         this.url = url;
     }
