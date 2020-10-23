@@ -3,6 +3,7 @@ package com.assignment.individual.pokedex.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pokemon {
@@ -14,20 +15,18 @@ public class Pokemon {
     int pokemonId;
     int height;
     int weight;
-    List<PokemonMove> pokemonMoves;
-    List<PokemonType> pokemonTypes;
+    List<String> pokemonMoves = new ArrayList<>();
+    List<String> pokemonTypes = new ArrayList<>();
 
     public Pokemon() {
     }
 
-    public Pokemon(String name, String url, int pokemonId, int height, int weight, List<PokemonMove> pokemonMoves, List<PokemonType> pokemonTypes) {
+    public Pokemon(String name, String url, int pokemonId, int height, int weight, List<String> pokemonMoves, List<String> pokemonTypes) {
         this.name = name;
         this.url = url;
         this.pokemonId = pokemonId;
         this.height = height;
         this.weight = weight;
-        this.pokemonMoves = pokemonMoves;
-        this.pokemonTypes = pokemonTypes;
     }
 
     public String getDbId() {
@@ -78,19 +77,19 @@ public class Pokemon {
         this.weight = weight;
     }
 
-    public List<PokemonMove> getMoves() {
+    public List<String> getPokemonMoves() {
         return pokemonMoves;
     }
 
-    public void setMoves(List<PokemonMove> pokemonMoves) {
+    public void setPokemonMoves(List<String> pokemonMoves) {
         this.pokemonMoves = pokemonMoves;
     }
 
-    public List<PokemonType> getTypes() {
+    public List<String> getPokemonTypes() {
         return pokemonTypes;
     }
 
-    public void setTypes(List<PokemonType> pokemonTypes) {
+    public void setPokemonTypes(List<String> pokemonTypes) {
         this.pokemonTypes = pokemonTypes;
     }
 }

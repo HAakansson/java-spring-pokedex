@@ -27,22 +27,28 @@ public class PokemonService {
     @Autowired
     PokemonBaseInfoRepo pokemonBaseInfoRepo;
 
-    public List<Pokemon> getAllPokemons(){
+    public List<Pokemon> getAllPokemons() {
         return pokemonRepo.findAll();
     }
 
-    public List<Pokemon> getPokemonByQuery(String name){
+    public List<Pokemon> getPokemonByQuery(String name) {
         var pokemons = pokemonRepo.findByNameContaining(name);
 
-        if(pokemons.isEmpty()){
+        if (pokemons.isEmpty()) {
             var listOfPokemonBaseInfo = pokemonBaseInfoRepo.findByNameContaining(name);
-            if(!listOfPokemonBaseInfo.isEmpty()) {
+            if (!listOfPokemonBaseInfo.isEmpty()) {
                 for (var p : listOfPokemonBaseInfo) {
                     Pokemon pokemon = restTemplate.getForObject(p.getUrl(), Pokemon.class);
                     PokemonMoveList pokemonMoveList = restTemplate.getForObject(p.getUrl(), PokemonMoveList.class);
                     PokemonTypeList pokemonTypeList = restTemplate.getForObject(p.getUrl(), PokemonTypeList.class);
-                    pokemon.setMoves(pokemonMoveList.getMoves());
-                    pokemon.setTypes(pokemonTypeList.getTypes());
+                    for (var m : pokemonMoveList.getMoves()) {
+                        String move = m.getMove().get("name");
+                        pokemon.getPokemonMoves().add(move);
+                    }
+                    for (var t : pokemonTypeList.getTypes()) {
+                        String type = t.getType().get("name");
+                        pokemon.getPokemonTypes().add(type);
+                    }
                     pokemon.setUrl(p.getUrl());
                     pokemon = pokemonRepo.save(pokemon);
                     pokemons.add(pokemon);
@@ -54,14 +60,14 @@ public class PokemonService {
         return pokemons;
     }
 
-    public Pokemon getPokemonByPokedexId(int id){
+    public Pokemon getPokemonByPokedexId(int id) {
         var pokemon = pokemonRepo.findByPokemonId(id);
-        if(pokemon == null){
+        if (pokemon == null) {
             String urlToPokemon;
             List<PokemonBaseInfo> results = pokemonBaseInfoRepo.findAll();
-            for(var p : results){
-                if(p.getUrl().split("/")[6].equals(Integer.toString(id))){
-                   return this.getPokemonByQuery(p.getName()).get(0);
+            for (var p : results) {
+                if (p.getUrl().split("/")[6].equals(Integer.toString(id))) {
+                    return this.getPokemonByQuery(p.getName()).get(0);
                 }
             }
         }
