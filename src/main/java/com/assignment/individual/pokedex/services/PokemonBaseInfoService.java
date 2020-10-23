@@ -27,8 +27,8 @@ public class PokemonBaseInfoService {
         if (pokemonsBaseInfoFromDB.size() == 0) {
             PokemonList response = restTemplate.getForObject(POKEMONS_URL, PokemonList.class);
             List<PokemonBaseInfo> pokemonList = response.getResults();
-            for (PokemonBaseInfo pokemonBaseInfo : pokemonList) {
-                pokemonBaseInfoRepo.save(pokemonBaseInfo);
+            for (var p : pokemonList) {
+                pokemonBaseInfoRepo.save(p);
             }
             System.out.println("Requested from PokeAPI.");
             return pokemonList;

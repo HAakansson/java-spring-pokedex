@@ -14,20 +14,20 @@ public class Pokemon {
     int pokemonId;
     int height;
     int weight;
-    List<String> types;
-    List<String> moves;
+    List<PokemonMove> pokemonMoves;
+    List<PokemonType> pokemonTypes;
 
     public Pokemon() {
     }
 
-    public Pokemon(String name, String url, int pokemonId, int height, int weight, List<String> types, List<String> moves) {
+    public Pokemon(String name, String url, int pokemonId, int height, int weight, List<PokemonMove> pokemonMoves, List<PokemonType> pokemonTypes) {
         this.name = name;
         this.url = url;
         this.pokemonId = pokemonId;
         this.height = height;
         this.weight = weight;
-        this.types = types;
-        this.moves = moves;
+        this.pokemonMoves = pokemonMoves;
+        this.pokemonTypes = pokemonTypes;
     }
 
     public String getDbId() {
@@ -78,19 +78,19 @@ public class Pokemon {
         this.weight = weight;
     }
 
-    public List<String> getTypes() {
-        return types;
+    public List<PokemonMove> getMoves() {
+        return pokemonMoves;
     }
 
-    public void setTypes(List<String> types) {
-        this.types = types;
+    public void setMoves(List<PokemonMove> pokemonMoves) {
+        this.pokemonMoves = pokemonMoves;
     }
 
-    public List<String> getMoves() {
-        return moves;
+    public List<PokemonType> getTypes() {
+        return pokemonTypes;
     }
 
-    public void setMoves(List<String> moves) {
-        this.moves = moves;
+    public void setTypes(List<PokemonType> pokemonTypes) {
+        this.pokemonTypes = pokemonTypes;
     }
 }

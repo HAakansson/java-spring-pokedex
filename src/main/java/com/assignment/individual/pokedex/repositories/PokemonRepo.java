@@ -8,4 +8,5 @@ import java.util.List;
 public interface PokemonRepo extends MongoRepository<Pokemon, String> {
 
     List<Pokemon> findByNameContaining(String name);
+    Pokemon findByPokemonId(int pokemonId);
 }
