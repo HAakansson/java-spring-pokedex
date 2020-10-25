@@ -5,9 +5,11 @@ import com.assignment.individual.pokedex.services.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,18 +20,19 @@ public class PokemonController {
     PokemonService pokemonService;
 
     @GetMapping
-    public ResponseEntity<List<Pokemon>> getPokemons(@RequestParam(required = false) String name) {
-        if (name == null) {
+    public ResponseEntity<List<Pokemon>> getPokemons(@RequestParam(required = false) String name,
+                                                     @RequestParam(required = false) String type) {
+        if (name == null && type == null) {
             var pokemons = pokemonService.getAllPokemons();
             if (pokemons.isEmpty()) {
                 HttpHeaders headers = new HttpHeaders();
                 headers.add("Info", "There are no pokemons saved in your database.");
-                return new ResponseEntity<>(null, headers, HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(null, headers, HttpStatus.NOT_FOUND);
             }
             return ResponseEntity.ok(pokemons);
         }
 
-        var pokemons = pokemonService.getPokemonByQuery(name);
+        var pokemons = pokemonService.getPokemonByQuery(name, type);
         if (pokemons.isEmpty()) {
             HttpHeaders headers = new HttpHeaders();
             headers.add("Info", "There are no pokemons in the database containing that name.");
@@ -47,5 +50,24 @@ public class PokemonController {
             return new ResponseEntity<>(null, headers, HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(pokemon);
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE) // Egentligen ett defaultvärde.
+    public ResponseEntity<Pokemon> saveMovie(@RequestBody Pokemon pokemon) {
+        var pokemonToSave = pokemonService.save(pokemon);
+        var uri = URI.create("/api/v1/pokemons/" + pokemonToSave.getPokemonId());
+        return ResponseEntity.created(uri).body(pokemonToSave);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updatePokemon(@PathVariable int id, @RequestBody Pokemon pokemon) {
+        pokemonService.update(id, pokemon);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePokemon(@PathVariable int id) {
+        pokemonService.delete(id);
     }
 }
