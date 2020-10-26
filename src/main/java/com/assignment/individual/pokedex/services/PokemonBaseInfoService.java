@@ -24,16 +24,14 @@ public class PokemonBaseInfoService {
 
     public List<PokemonBaseInfo> getAllPokemonsAvailable() {
         List<PokemonBaseInfo> pokemonsBaseInfoFromDB = pokemonBaseInfoRepo.findAll();
-        if (pokemonsBaseInfoFromDB.size() == 0) {
+        if (pokemonsBaseInfoFromDB.isEmpty()) {
             PokemonList response = restTemplate.getForObject(POKEMONS_URL, PokemonList.class);
             List<PokemonBaseInfo> pokemonList = response.getResults();
             for (var p : pokemonList) {
                 pokemonBaseInfoRepo.save(p);
             }
-            System.out.println("Requested from PokeAPI.");
             return pokemonList;
         }
-        System.out.println("Requested from Mongo.");
         return pokemonsBaseInfoFromDB;
     }
 }
