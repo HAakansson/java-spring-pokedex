@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonMoveList {
-    private List<PokemonMove> pokemonMoves;
+    private List<PokemonMove> moves;
 
     public PokemonMoveList() {
     }
 
-    public PokemonMoveList(List<PokemonMove> pokemonMoves) {
-        this.pokemonMoves = new ArrayList<>();
+    public PokemonMoveList(List<PokemonMove> moves) {
+        this.moves = new ArrayList<>();
     }
 
     public List<PokemonMove> getMoves() {
-        return pokemonMoves;
+        return moves;
     }
 
     public void setMoves(List<PokemonMove> pokemonMoves) {
-        this.pokemonMoves = pokemonMoves;
+        this.moves = pokemonMoves;
     }
 }

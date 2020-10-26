@@ -94,8 +94,8 @@ public class PokemonService {
                 PokemonMoveList pokemonMoveList = restTemplate.getForObject(p.getUrl(), PokemonMoveList.class);
                 PokemonTypeList pokemonTypeList = restTemplate.getForObject(p.getUrl(), PokemonTypeList.class);
                 for (var m : pokemonMoveList.getMoves()) {
-                    String move = m.getMove().get("name");
-                    pokemon.getPokemonMoves().add(move);
+                    String moveToAdd = m.getMove().get("name");
+                    pokemon.getPokemonMoves().add(moveToAdd);
                 }
                 for (var t : pokemonTypeList.getTypes()) {
                     String typeToAdd = t.getType().get("name");

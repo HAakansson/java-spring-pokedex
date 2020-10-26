@@ -35,7 +35,7 @@ public class PokemonController {
         var pokemons = pokemonService.getPokemonByQuery(name, type);
         if (pokemons.isEmpty()) {
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Info", "There are no pokemons in the database containing that name.");
+            headers.add("Info", "There are no pokemons with that name or type.");
             return new ResponseEntity<>(null, headers, HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(pokemons);

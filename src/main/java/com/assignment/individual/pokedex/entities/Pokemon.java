@@ -21,7 +21,7 @@ public class Pokemon {
     public Pokemon() {
     }
 
-    public Pokemon(String name, String url, int pokemonId, int height, int weight, List<String> pokemonMoves, List<String> pokemonTypes) {
+    public Pokemon(String name, String url, int pokemonId, int height, int weight) {
         this.name = name;
         this.url = url;
         this.pokemonId = pokemonId;
