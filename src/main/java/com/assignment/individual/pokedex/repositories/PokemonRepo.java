@@ -11,10 +11,28 @@ import java.util.List;
 public interface PokemonRepo extends MongoRepository<Pokemon, String> {
 
     List<Pokemon> findByNameContaining(String name);
+
     List<Pokemon> findByPokemonTypes(String type);
-    @Query("{$and: [ {'name':/?0/}, {'pokemonTypes' : '?1'} ] }")
+
+    List<Pokemon> findByPokemonMoves(String move);
+
+    List<Pokemon> findByWeight(String weight);
+
+    @Query("{$and: [ {'name':/?0/}, {'pokemonTypes':'?1'}, {'move':'?2'}, {'weight':'?3'} ] }")
+    List<Pokemon> findByNameContainingAndPokemonTypesAndPokemonMovesAndWeight(String name, String type, String move, String weight);
+
+    @Query("{$and: [ {'name':/?0/}, {'pokemonTypes':'?1'}, {'move':'?2'} ] }")
+    List<Pokemon> findByNameContainingAndPokemonTypesAndPokemonMoves(String name, String type, String move);
+
+    @Query("{$and: [ {'pokemonTypes':'?0'}, {'move':'?1'}, {'weight':'?2'} ] }")
+    List<Pokemon> findByPokemonTypesAndPokemonMovesAndWeight(String type, String move, String weight);
+
+    @Query("{$and: [ {'name':/?0/}, {'pokemonTypes':'?1'} ] }")
     List<Pokemon> findByNameContainingAndPokemonType(String name, String type);
+
     Pokemon findByPokemonId(int pokemonId);
+
     boolean existsByPokemonId(int pokemonId);
+
     void deleteByPokemonId(int pokemonId);
 }

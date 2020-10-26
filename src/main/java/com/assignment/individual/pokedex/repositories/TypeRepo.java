@@ -6,4 +6,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TypeRepo extends MongoRepository<Type, String> {
+    Type findByName(String name);
+
+    boolean existsByTypeId(int pokemonId);
+
+    boolean existsByName(String name);
+
+    void deleteByTypeId(int typeId);
 }

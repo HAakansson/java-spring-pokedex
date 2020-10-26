@@ -5,8 +5,10 @@ import com.assignment.individual.pokedex.repositories.TypeBaseInfoRepo;
 import com.assignment.individual.pokedex.repositories.TypeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,41 @@ public class TypeService {
             return this.getAllTypesFromPokeAPI();
         }
         return types;
+    }
+
+    public List<Type> getTypeWithQuery(String name, String move, String pokemon, String doubleDamageTo) {
+//        List<Type> types = new ArrayList<>();
+//        if(name != null && move != null && pokemon != null && doubleDamageTo != null){
+//
+//        }
+        return null;
+    }
+
+    public Type save(Type type) {
+        return typeRepo.save(type);
+    }
+
+    public void update(int id, Type type) {
+        if (!typeRepo.existsByTypeId(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find any type with that type id");
+        }
+        type.setTypeId(id);
+        typeRepo.save(type);
+    }
+
+    public void delete(int id) {
+        if (!typeRepo.existsByTypeId(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find any type with that type id");
+        }
+        typeRepo.deleteByTypeId(id);
+    }
+
+    public Type getTypeByName(String name) {
+        Type type = typeRepo.findByName(name);
+        if (type == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There does not exist a type with that name.");
+        }
+        return type;
     }
 
     public List<Type> getAllTypesFromPokeAPI() {
@@ -63,7 +100,7 @@ public class TypeService {
             for (var e : typePokemonList.getPokemon()) {
                 type.getPokemonList().add(e.getPokemon().get("name"));
             }
-            for (var e : typeMoveList.getMoves()){
+            for (var e : typeMoveList.getMoves()) {
                 type.getMoveList().add(e.getName());
             }
             type.setUrl(t.getUrl());

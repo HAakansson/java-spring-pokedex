@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TypeBaseInfoRepo extends MongoRepository<TypeBaseInfo, String> {
+    TypeBaseInfo findByName(String name);
+
+    boolean existsByName(String name);
 }

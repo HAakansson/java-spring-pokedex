@@ -2,14 +2,14 @@ package com.assignment.individual.pokedex.entities;
 
 import java.util.HashMap;
 
-public class DamageObject {
+public class TypeDamageObject {
     String name;
     String url;
 
-    public DamageObject() {
+    public TypeDamageObject() {
     }
 
-    public DamageObject(String name, String url) {
+    public TypeDamageObject(String name, String url) {
         this.name = name;
         this.url = url;
     }
