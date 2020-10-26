@@ -18,14 +18,20 @@ public interface PokemonRepo extends MongoRepository<Pokemon, String> {
 
     List<Pokemon> findByWeight(String weight);
 
-    @Query("{$and: [ {'name':/?0/}, {'pokemonTypes':'?1'}, {'move':'?2'}, {'weight':'?3'} ] }")
+    @Query("{$and: [ {'name':/?0/}, {'pokemonTypes':'?1'}, {'pokemonMoves':'?2'}, {'weight':'?3'} ] }")
     List<Pokemon> findByNameContainingAndPokemonTypesAndPokemonMovesAndWeight(String name, String type, String move, String weight);
 
-    @Query("{$and: [ {'name':/?0/}, {'pokemonTypes':'?1'}, {'move':'?2'} ] }")
+    @Query("{$and: [ {'name':/?0/}, {'pokemonTypes':'?1'}, {'pokemonMoves':'?2'} ] }")
     List<Pokemon> findByNameContainingAndPokemonTypesAndPokemonMoves(String name, String type, String move);
 
-    @Query("{$and: [ {'pokemonTypes':'?0'}, {'move':'?1'}, {'weight':'?2'} ] }")
+    @Query("{$and: [ {'pokemonTypes':'?0'}, {'pokemonMoves':'?1'}, {'weight':'?2'} ] }")
     List<Pokemon> findByPokemonTypesAndPokemonMovesAndWeight(String type, String move, String weight);
+
+    @Query("{$and: [ {'name':/?0/}, {'pokemonMoves':'?1'}, {'weight':'?2'} ] }")
+    List<Pokemon> findByNameContainingAndPokemonMovesAndWeight(String name, String move, String weight);
+
+    @Query("{$and: [ {'name':/?0/}, {'pokemonTypes':'?1'}, {'weight':'?2'} ] }")
+    List<Pokemon> findByNameContainingAndPokemonTypesAndWeight(String name, String type, String weight);
 
     @Query("{$and: [ {'name':/?0/}, {'pokemonTypes':'?1'} ] }")
     List<Pokemon> findByNameContainingAndPokemonType(String name, String type);

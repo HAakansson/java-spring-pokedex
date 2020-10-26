@@ -71,6 +71,28 @@ public class PokemonService {
                 }
             }
 
+        } else if (name != null && move != null && weight != null) {
+            pokemons = pokemonRepo.findByNameContainingAndPokemonMovesAndWeight(name, move, weight);
+            if (pokemons.isEmpty()) {
+                pokemons = getPokemonsByNameFromPokeAPI(name);
+                if (!pokemons.isEmpty()) {
+                    pokemons = pokemons.stream()
+                            .filter(p -> p.getPokemonMoves().contains(move) && p.getWeight() == (Integer.parseInt(weight)))
+                            .collect(Collectors.toList());
+                }
+            }
+
+        } else if (name != null && type != null && weight != null) {
+            pokemons = pokemonRepo.findByNameContainingAndPokemonTypesAndWeight(name, type, weight);
+            if (pokemons.isEmpty()) {
+                pokemons = getPokemonsByNameFromPokeAPI(name);
+                if (!pokemons.isEmpty()) {
+                    pokemons = pokemons.stream()
+                            .filter(p -> p.getPokemonTypes().contains(type) && p.getWeight() == (Integer.parseInt(weight)))
+                            .collect(Collectors.toList());
+                }
+            }
+
         } else if (name != null && type != null) {
             pokemons = pokemonRepo.findByNameContainingAndPokemonType(name, type);
             if (pokemons.isEmpty()) {
