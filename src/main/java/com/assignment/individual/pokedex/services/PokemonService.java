@@ -39,7 +39,7 @@ public class PokemonService {
         List<Pokemon> pokemons = new ArrayList<>();
 
         if (name != null && type != null && move != null && weight != null) {
-            pokemons = pokemonRepo.findByNameContainingAndPokemonTypesAndPokemonMovesAndWeight(name, type, move, weight);
+            pokemons = pokemonRepo.findByNameContainingAndPokemonTypesAndPokemonMovesAndWeight(name, type, move, Integer.parseInt(weight));
             if (pokemons.isEmpty()) {
                 pokemons = getPokemonsByNameFromPokeAPI(name);
                 if (!pokemons.isEmpty()) {
@@ -61,7 +61,7 @@ public class PokemonService {
             }
 
         } else if (type != null && move != null && weight != null) {
-            pokemons = pokemonRepo.findByPokemonTypesAndPokemonMovesAndWeight(type, move, weight);
+            pokemons = pokemonRepo.findByPokemonTypesAndPokemonMovesAndWeight(type, move, Integer.parseInt(weight));
             if (pokemons.isEmpty()) {
                 pokemons = getPokemonsByType(type);
                 if (!pokemons.isEmpty()) {
@@ -72,7 +72,7 @@ public class PokemonService {
             }
 
         } else if (name != null && move != null && weight != null) {
-            pokemons = pokemonRepo.findByNameContainingAndPokemonMovesAndWeight(name, move, weight);
+            pokemons = pokemonRepo.findByNameContainingAndPokemonMovesAndWeight(name, move, Integer.parseInt(weight));
             if (pokemons.isEmpty()) {
                 pokemons = getPokemonsByNameFromPokeAPI(name);
                 if (!pokemons.isEmpty()) {
@@ -83,7 +83,7 @@ public class PokemonService {
             }
 
         } else if (name != null && type != null && weight != null) {
-            pokemons = pokemonRepo.findByNameContainingAndPokemonTypesAndWeight(name, type, weight);
+            pokemons = pokemonRepo.findByNameContainingAndPokemonTypesAndWeight(name, type, Integer.parseInt(weight));
             if (pokemons.isEmpty()) {
                 pokemons = getPokemonsByNameFromPokeAPI(name);
                 if (!pokemons.isEmpty()) {
@@ -98,28 +98,80 @@ public class PokemonService {
             if (pokemons.isEmpty()) {
                 pokemons = getPokemonsByNameFromPokeAPI(name);
                 if (!pokemons.isEmpty()) {
-                    return pokemons.stream()
+                    pokemons = pokemons.stream()
                             .filter(p -> p.getPokemonTypes().contains(type))
                             .collect(Collectors.toList());
-                } else {
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find any pokemon with that name and type.");
                 }
             }
+
+        } else if (name != null && move != null) {
+            pokemons = pokemonRepo.findByNameContainingAndPokemonMoves(name, move);
+            if (pokemons.isEmpty()) {
+                pokemons = getPokemonsByNameFromPokeAPI(name);
+                if (!pokemons.isEmpty()) {
+                    pokemons = pokemons.stream()
+                            .filter(p -> p.getPokemonMoves().contains(move))
+                            .collect(Collectors.toList());
+                }
+            }
+
+        } else if (name != null && weight != null) {
+            pokemons = pokemonRepo.findByNameContainingAndWeight(name, Integer.parseInt(weight));
+            if (pokemons.isEmpty()) {
+                pokemons = getPokemonsByNameFromPokeAPI(name);
+                if (!pokemons.isEmpty()) {
+                    pokemons = pokemons.stream()
+                            .filter(p -> p.getWeight() == Integer.parseInt(weight))
+                            .collect(Collectors.toList());
+                }
+            }
+
+        } else if (type != null && move != null) {
+            pokemons = pokemonRepo.findByPokemonTypesAndPokemonMoves(type, move);
+            if (pokemons.isEmpty()) {
+                pokemons = getPokemonsByType(type);
+                if (!pokemons.isEmpty()) {
+                    pokemons = pokemons.stream()
+                            .filter(p -> p.getPokemonMoves().contains(move))
+                            .collect(Collectors.toList());
+                }
+            }
+
+        } else if (type != null && weight != null) {
+            pokemons = pokemonRepo.findByPokemonTypesAndWeight(type, Integer.parseInt(weight));
+            if (pokemons.isEmpty()) {
+                pokemons = getPokemonsByType(type);
+                if (!pokemons.isEmpty()) {
+                    pokemons = pokemons.stream()
+                            .filter(p -> p.getWeight() == Integer.parseInt(weight))
+                            .collect(Collectors.toList());
+                }
+            }
+
+        } else if (move != null && weight != null) {
+            pokemons = pokemonRepo.findByPokemonMovesAndWeight(move, Integer.parseInt(weight));
+            //TODO Fix a method for getting pokemons by moves.
 
         } else if (name != null) {
             pokemons = pokemonRepo.findByNameContaining(name);
             if (pokemons.isEmpty()) {
-                return getPokemonsByNameFromPokeAPI(name);
+                pokemons = getPokemonsByNameFromPokeAPI(name);
             }
 
         } else if (type != null) {
             pokemons = pokemonRepo.findByPokemonTypes(type);
+            if (pokemons.isEmpty()) {
+                pokemons = getPokemonsByType(type);
+            }
 
         } else if (move != null) {
             pokemons = pokemonRepo.findByPokemonMoves(move);
+            //TODO Fix a method for getting pokemons by moves.
 
         } else if (weight != null) {
-            pokemons = pokemonRepo.findByWeight(weight);
+            pokemons = pokemonRepo.findByWeight(Integer.parseInt(weight));
+            //TODO Fix a method for getting pokemons by weight.
+
         }
 
         return pokemons;
@@ -187,8 +239,8 @@ public class PokemonService {
     public List<Pokemon> getPokemonsByType(String type) {
         List<Pokemon> pokemons = new ArrayList<>();
         Type typeTofind = typeService.getTypeByName(type);
-        for (var p : typeTofind.getPokemonList()) {
-            Pokemon pokemon = this.getPokemonByQuery(p, null, null, null).get(0);
+        for (var pokemonName : typeTofind.getPokemonList()) {
+            Pokemon pokemon = this.getPokemonByQuery(pokemonName, null, null, null).get(0);
             pokemons.add(pokemon);
         }
         return pokemons;
