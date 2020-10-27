@@ -1,90 +1,102 @@
 package com.assignment.individual.pokedex.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 
 public class Move {
-    @Id
-    String id;
-    int accuracy;
-    int moveId;
-    String name;
-    int power;
-    int pp;
-    String attackType = "";
-    String attackClass = "";
+  @Id
+  String dbId;
+  String url;
+  String name;
+  String attackType = "";
+  String attackClass = "";
+  @JsonProperty("id")
+  int moveId;
+  int power;
+  int pp;
+  int accuracy;
 
-    public Move() {
-    }
+  public Move() {
+  }
 
-    public Move(int accuracy, int moveId, String name, int power, int pp) {
-        this.accuracy = accuracy;
-        this.moveId = moveId;
-        this.name = name;
-        this.power = power;
-        this.pp = pp;
-    }
+  public Move(String url, int accuracy, int moveId, String name, int power, int pp) {
+    this.url = url;
+    this.accuracy = accuracy;
+    this.moveId = moveId;
+    this.name = name;
+    this.power = power;
+    this.pp = pp;
+  }
 
-    public String getId() {
-        return id;
-    }
+  public String getDbId() {
+    return dbId;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setDbId(String dbId) {
+    this.dbId = dbId;
+  }
 
-    public int getAccuracy() {
-        return accuracy;
-    }
+  public String getUrl() {
+    return url;
+  }
 
-    public void setAccuracy(int accuracy) {
-        this.accuracy = accuracy;
-    }
+  public void setUrl(String url) {
+    this.url = url;
+  }
 
-    public int getMoveId() {
-        return moveId;
-    }
+  public int getAccuracy() {
+    return accuracy;
+  }
 
-    public void setMoveId(int moveId) {
-        this.moveId = moveId;
-    }
+  public void setAccuracy(int accuracy) {
+    this.accuracy = accuracy;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public int getMoveId() {
+    return moveId;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setMoveId(int moveId) {
+    this.moveId = moveId;
+  }
 
-    public int getPower() {
-        return power;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setPower(int power) {
-        this.power = power;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public int getPp() {
-        return pp;
-    }
+  public int getPower() {
+    return power;
+  }
 
-    public void setPp(int pp) {
-        this.pp = pp;
-    }
+  public void setPower(int power) {
+    this.power = power;
+  }
 
-    public String getAttackType() {
-        return attackType;
-    }
+  public int getPp() {
+    return pp;
+  }
 
-    public void setAttackType(String attackType) {
-        this.attackType = attackType;
-    }
+  public void setPp(int pp) {
+    this.pp = pp;
+  }
 
-    public String getAttackClass() {
-        return attackClass;
-    }
+  public String getAttackType() {
+    return attackType;
+  }
 
-    public void setAttackClass(String attackClass) {
-        this.attackClass = attackClass;
-    }
+  public void setAttackType(String attackType) {
+    this.attackType = attackType;
+  }
+
+  public String getAttackClass() {
+    return attackClass;
+  }
+
+  public void setAttackClass(String attackClass) {
+    this.attackClass = attackClass;
+  }
 }
