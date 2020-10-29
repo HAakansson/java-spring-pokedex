@@ -37,6 +37,12 @@ public class MoveService {
   public List<Move> getMovesByQuery(String name, String power, String damageClass, String type) {
     List<Move> moves = new ArrayList<>();
 
+    System.out.println("MOVE SERVICE");
+    System.out.println("name: " + name);
+    System.out.println("power: " + power);
+    System.out.println("damageClass: " + damageClass);
+    System.out.println("type: " + type);
+
     if (name != null && power != null && damageClass != null && type != null) {
       moves = moveRepo.findByNameContainingAndPowerAndAttackClassAndType(name, Integer.parseInt(power), damageClass, type);
       if (moves.isEmpty()) {

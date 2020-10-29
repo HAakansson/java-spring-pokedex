@@ -24,7 +24,7 @@ public class TypeController {
                                              @RequestParam(required = false) String move,
                                              @RequestParam(required = false) String pokemon,
                                              @RequestParam(required = false) String doubleDamageTo) {
-    if (name == null || move == null || pokemon == null || doubleDamageTo == null) {
+    if (name == null && move == null && pokemon == null && doubleDamageTo == null) {
       var types = typeService.getAllTypes();
       return ResponseEntity.ok(types);
     }

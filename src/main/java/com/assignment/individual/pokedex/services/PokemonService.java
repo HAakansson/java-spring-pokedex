@@ -38,6 +38,12 @@ public class PokemonService {
   public List<Pokemon> getPokemonByQuery(String name, String type, String move, String weight) {
     List<Pokemon> pokemons = new ArrayList<>();
 
+    System.out.println("POKEMON SERVICE");
+    System.out.println("name: " + name);
+    System.out.println("type: " + type);
+    System.out.println("move: " + move);
+    System.out.println("weight: " + weight);
+
     if (name != null && type != null && move != null && weight != null) {
       pokemons = pokemonRepo.findByNameContainingAndPokemonTypesAndPokemonMovesAndWeight(name, type, move, Integer.parseInt(weight));
       if (pokemons.isEmpty()) {

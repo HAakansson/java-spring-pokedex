@@ -8,9 +8,6 @@ public class PokemonMove {
     private HashMap<String, String> move;
 
     public PokemonMove() {
-    }
-
-    public PokemonMove(HashMap<String, String> move) {
         this.move = new HashMap<>();
     }
 

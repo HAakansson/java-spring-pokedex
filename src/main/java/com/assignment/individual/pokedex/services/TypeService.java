@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TypeService {
@@ -37,7 +38,110 @@ public class TypeService {
   }
 
   public List<Type> getTypeByQuery(String name, String move, String pokemon, String doubleDamageTo) {
-    return null;
+    List<Type> types = new ArrayList<>();
+
+    System.out.println("TYPE SERVICE");
+    System.out.println("name: " + name);
+    System.out.println("move: " + move);
+    System.out.println("pokemon: " + pokemon);
+    System.out.println("doubleDamageTo: " + doubleDamageTo);
+
+    if (name != null && move != null && pokemon != null && doubleDamageTo != null) {
+      types = typeRepo.findByNameAndMoveAndPokemonAndDoubleDamageTo(name, move, pokemon, doubleDamageTo);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    } else if (name != null && move != null && pokemon != null) {
+      types = typeRepo.findByNameAndMoveAndPokemon(name, move, pokemon);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    } else if (move != null && pokemon != null && doubleDamageTo != null) {
+      types = typeRepo.findByMoveAndPokemonAndDoubleDamageTo(move, pokemon, doubleDamageTo);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+
+    } else if (name != null & pokemon != null && doubleDamageTo != null) {
+      types = typeRepo.findByNameAndPokemonAndDoubleDamageTo(name, pokemon, doubleDamageTo);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    } else if (name != null && move != null && doubleDamageTo != null) {
+      types = typeRepo.findByNameAndMoveAndDoubleDamageTo(name, move, doubleDamageTo);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    } else if (name != null && move != null) {
+      types = typeRepo.findByNameAndMove(name, move);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    } else if (name != null && doubleDamageTo != null) {
+      types = typeRepo.findByNameAndDoubleDamageTo(name, doubleDamageTo);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    } else if (name != null && pokemon != null) {
+      types = typeRepo.findByNameAndPokemon(name, pokemon);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    } else if (move != null && doubleDamageTo != null) {
+      types = typeRepo.findByMoveAndDoubleDamageTo(move, doubleDamageTo);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    } else if (move != null && pokemon != null) {
+      types = typeRepo.findByMoveAndPokemon(move, pokemon);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    } else if (pokemon != null && doubleDamageTo != null) {
+      types = typeRepo.findByPokemonAndDoubleDamageTo(pokemon, doubleDamageTo);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    } else if (name != null) {
+      Type type = typeRepo.findByName(name);
+      types.add(type);
+
+      if (types.isEmpty()) {
+        types = getAllTypesFromPokeAPI();
+        types = types.stream().filter(t -> t.getName().equals(name)).collect(Collectors.toList());
+      }
+
+    } else if (move != null) {
+      types = typeRepo.findByMoveListContaining(move);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    } else if (pokemon != null) {
+      types = typeRepo.findByPokemonListContaining(pokemon);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    } else if (doubleDamageTo != null) {
+      types = typeRepo.findByDoubleDamageTo(doubleDamageTo);
+      if (types.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no type with that combination of queries.");
+      }
+
+    }
+    return types;
   }
 
   public Type getTypeByTypeId(int id) {

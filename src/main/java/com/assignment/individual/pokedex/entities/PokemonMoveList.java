@@ -7,9 +7,6 @@ public class PokemonMoveList {
     private List<PokemonMove> moves;
 
     public PokemonMoveList() {
-    }
-
-    public PokemonMoveList(List<PokemonMove> moves) {
         this.moves = new ArrayList<>();
     }
 
