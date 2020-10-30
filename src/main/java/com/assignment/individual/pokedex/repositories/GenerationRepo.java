@@ -11,29 +11,29 @@ import java.util.List;
 public interface GenerationRepo extends MongoRepository<Generation, String> {
 
   @Query("{'generationName':/?0/}")
-  List<Generation> findByGenerationNameContaining(String name);
+  List<Generation> findByGenerationName(String name);
 
   @Query("{'pokemons':/?0/}")
-  List<Generation> findByPokemonsContaining(String pokemon);
+  List<Generation> findByPokemons(String pokemon);
 
-  @Query("{'pokemonsMoves':/?0/}")
-  List<Generation> findByPokemonMovesContaining(String move);
+  @Query("{'pokemonMoves':/?0/}")
+  List<Generation> findByPokemonMoves(String move);
 
-  @Query("{$and: [ {'name':/?0/}, {'pokemons':/?1/}, {'pokemonMoves':/?2/} ] }")
-  List<Generation> findByNameContainingAndPokemonTypesAndPokemonMoves(String name, String pokemon, String move);
+  @Query("{$and: [ {'generationName':/?0/}, {'pokemons':/?1/}, {'pokemonMoves':/?2/} ] }")
+  List<Generation> findByGenerationNameAndPokemonAndPokemonMoves(String name, String pokemon, String move);
 
-  @Query("{$and: [ {'name':/?0/}, {'pokemons':/?1/} ] }")
-  List<Generation> findByNameContainingAndPokemonType(String name, String pokemon);
+  @Query("{$and: [ {'generationName':/?0/}, {'pokemons':/?1/} ] }")
+  List<Generation> findByGenerationNameAndPokemon(String name, String pokemon);
 
-  @Query("{$and: [ {'name':/?0/}, {'pokemonMoves':/?1/} ] }")
-  List<Generation> findByNameContainingAndPokemonMoves(String name, String move);
+  @Query("{$and: [ {'generationName':/?0/}, {'pokemonMoves':/?1/} ] }")
+  List<Generation> findByGenerationNameAndPokemonMoves(String name, String move);
 
   @Query("{$and: [ {'pokemons':/?0/}, {'pokemonMoves':/?1/} ] }")
-  List<Generation> findByPokemonTypesAndPokemonMoves(String pokemon, String move);
+  List<Generation> findByPokemonAndPokemonMoves(String pokemon, String move);
 
-  Generation findByPokemonId(int generationId);
+  Generation findByGenerationId(int generationId);
 
-  boolean existsByPokemonId(int generationId);
+  boolean existsByGenerationId(int generationId);
 
-  void deleteByPokemonId(int generationId);
+  void deleteByGenerationId(int generationId);
 }

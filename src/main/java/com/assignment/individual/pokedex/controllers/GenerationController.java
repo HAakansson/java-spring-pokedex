@@ -5,17 +5,16 @@ import com.assignment.individual.pokedex.entities.Pokemon;
 import com.assignment.individual.pokedex.services.GenerationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/moves")
+@RequestMapping("/api/v1/generations")
 public class GenerationController {
 
   @Autowired
@@ -38,5 +37,33 @@ public class GenerationController {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find any generation with that combination of queries.");
     }
     return ResponseEntity.ok(generations);
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Generation> getPokemonByPokedexId(@PathVariable int id){
+    Generation generation = generationService.getPokemonByGenerationId(id);
+    if(generation == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "It does not exist a generation with that generation id.");
+    }
+    return ResponseEntity.ok(generation);
+  }
+
+  @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE) // Egentligen ett defaultvärde.
+  public ResponseEntity<Generation> savePokemon(@RequestBody Generation generation) {
+    var generationToSave = generationService.save(generation);
+    var uri = URI.create("/api/v1/pokemons/" + generationToSave.getGenerationId());
+    return ResponseEntity.created(uri).body(generationToSave);
+  }
+
+  @PutMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void updateGeneration(@PathVariable int id, @RequestBody Generation generation) {
+    generationService.update(id, generation);
+  }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteGeneration(@PathVariable int id) {
+    generationService.delete(id);
   }
 }

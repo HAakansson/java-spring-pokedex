@@ -1,7 +1,5 @@
 package com.assignment.individual.pokedex.entities;
 
-import java.util.HashMap;
-
 public class TypeMove {
     String name;
     String url;

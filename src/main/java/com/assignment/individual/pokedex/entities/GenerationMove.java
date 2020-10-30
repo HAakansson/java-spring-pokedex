@@ -1,19 +1,20 @@
 package com.assignment.individual.pokedex.entities;
 
-import java.util.HashMap;
-
 public class GenerationMove {
-  private HashMap<String, String> move;
+  private String name;
 
   public GenerationMove() {
-    this.move = new HashMap<>();
   }
 
-  public HashMap<String, String> getMove() {
-    return move;
+  public GenerationMove(String name) {
+    this.name = name;
   }
 
-  public void setMove(HashMap<String, String> move) {
-    this.move = move;
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 }
