@@ -7,6 +7,7 @@ import java.util.Set;
 import static com.assignment.individual.pokedex.security.ApplicationUserPermisson.*;
 
 public enum ApplicationUserRole {
+  ADMINROOKIE(Sets.newHashSet(API_READ, USER_READ)),
   USER(Sets.newHashSet()),
   ADMIN(Sets.newHashSet(API_READ, API_WRITE, USER_READ, USER_WRITE));
 

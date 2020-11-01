@@ -165,7 +165,6 @@ public class MoveService {
   public Move getMoveByMoveId(int id) {
     Move move = moveRepo.findByMoveId(id);
     if (move == null) {
-      String moveUrl;
       List<MoveBaseInfo> listOfMoveBaseInfo = moveBaseInfoRepo.findAll();
       if (listOfMoveBaseInfo.isEmpty()) {
         listOfMoveBaseInfo = moveBaseInfoService.getAllMovesAvailable();

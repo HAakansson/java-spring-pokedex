@@ -41,8 +41,8 @@ public class MoveController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Move> getMoveByMoveId(@PathVariable String id) {
-    return ResponseEntity.ok(moveService.getMoveByMoveId(Integer.parseInt(id)));
+  public ResponseEntity<Move> getMoveByMoveId(@PathVariable int id) {
+    return ResponseEntity.ok(moveService.getMoveByMoveId(id));
   }
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE) // Egentligen ett defaultvärde.

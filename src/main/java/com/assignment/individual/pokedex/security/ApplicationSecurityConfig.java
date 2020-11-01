@@ -19,49 +19,51 @@ import static com.assignment.individual.pokedex.security.ApplicationUserRole.*;
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final PasswordEncoder passwordEncoder;
 
-  private final PasswordEncoder passwordEncoder;
+    @Autowired
+    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
-  @Autowired
-  public ApplicationSecurityConfig(PasswordEncoder passwordEncoder) {
-    this.passwordEncoder = passwordEncoder;
-  }
+    @Override // Basic authentication
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/api/v1/pokemons/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/pokemons").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.PUT ).hasRole("ADMIN")
+                .and()
+                .httpBasic();
+    }
 
-  @Override // Basic authentication
-  protected void configure(HttpSecurity http) throws Exception {
-    http
-        .authorizeRequests()
-        .antMatchers(HttpMethod.GET, "/api/v1/pokemons/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/api/v1/pokemons").permitAll()
-        .antMatchers(HttpMethod.GET, "/api/v1/**").hasAnyRole("USER", "ADMIN")
-        .and()
-        .httpBasic();
-  }
+    @Override
+    @Bean
+    protected UserDetailsService userDetailsService() {
+        UserDetails niklasUser = User.builder()
+                .username("niklas")
+                .password(passwordEncoder.encode("password"))
+                .roles(USER.name()) //ROLE_USER
+                .build();
 
-  @Override
-  @Bean
-  protected UserDetailsService userDetailsService() {
-    UserDetails niklasUser = User.builder()
-        .username("niklas")
-        .password(passwordEncoder.encode("password"))
-        .roles(USER.name()) //ROLE_USER
-        .build();
+        UserDetails mariaUser = User.builder()
+                .username("maria")
+                .password(passwordEncoder.encode("password"))
+                .roles(ADMIN.name())
+                .build();
 
-    UserDetails mariaUser = User.builder()
-        .username("maria")
-        .password(passwordEncoder.encode("password"))
-        .roles(ADMIN.name())
-        .build();
+        UserDetails elsaUser = User.builder()
+                .username("elsa")
+                .password(passwordEncoder.encode("password"))
+                .roles(ADMINROOKIE.name())
+                .build();
 
-    UserDetails elsaUser = User.builder()
-        .username("elsa")
-        .password(passwordEncoder.encode("password"))
-        .build();
-
-    return new InMemoryUserDetailsManager(
-        niklasUser,
-        mariaUser,
-        elsaUser
-    );
-  }
+        return new InMemoryUserDetailsManager(
+                niklasUser,
+                mariaUser,
+                elsaUser
+        );
+    }
 }
