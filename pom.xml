@@ -11,6 +11,7 @@
     <groupId>com.assignment.individual</groupId>
     <artifactId>pokedex</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>Pokedex - Individual Assignment</name>
     <description>Individual Assignment - Java Spring</description>
 
@@ -35,6 +36,11 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>28.1-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.2.32</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

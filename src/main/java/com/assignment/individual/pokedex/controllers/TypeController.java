@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -44,6 +45,7 @@ public class TypeController {
   }
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE) // Egentligen ett defaultvärde.
+  @Secured("ROLE_ADMIN")
   public ResponseEntity<Type> saveType(@RequestBody Type type) {
     var typeToSave = typeService.save(type);
     var uri = URI.create("/api/v1/type/" + typeToSave.getTypeId());
@@ -51,12 +53,14 @@ public class TypeController {
   }
 
   @PutMapping("/{id}")
+  @Secured("ROLE_ADMIN")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void updatePokemon(@PathVariable int id, @RequestBody Type type) {
     typeService.update(id, type);
   }
 
   @DeleteMapping("/{id}")
+  @Secured("ROLE_ADMIN")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deletePokemon(@PathVariable int id) {
     typeService.delete(id);

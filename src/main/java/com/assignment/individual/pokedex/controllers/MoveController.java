@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -46,6 +47,7 @@ public class MoveController {
   }
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE) // Egentligen ett defaultvärde.
+  @Secured("ROLE_ADMIN")
   public ResponseEntity<Move> savePokemon(@RequestBody Move move) {
     var moveToSave = moveService.save(move);
     var uri = URI.create("/api/v1/moves/" + moveToSave.getMoveId());
@@ -53,12 +55,14 @@ public class MoveController {
   }
 
   @PutMapping("/{id}")
+  @Secured("ROLE_ADMIN")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void updatePokemon(@PathVariable int id, @RequestBody Move move) {
     moveService.update(id, move);
   }
 
   @DeleteMapping("/{id}")
+  @Secured("ROLE_ADMIN")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deletePokemon(@PathVariable int id) {
     moveService.delete(id);
